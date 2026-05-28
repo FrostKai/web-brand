@@ -51,12 +51,18 @@
             [true, 'Standard audio codec'],
             [true, 'Email support'],
             [false, 'Custom EQ profiles'],
-          ] as [$included, $feature])
-            <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; {{ !$included ? 'color: var(--text-muted);' : '' }}">
-              <div style="width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
-                background: {{ $included ? 'var(--brand-blue-light)' : 'var(--gray-100)' }};
-                color: {{ $included ? 'var(--brand-blue)' : 'var(--gray-400)' }};">
-                {{ $included ? '✓' : '—' }}
+          ] as $item)
+            @php
+              $included = $item[0];
+              $feature = $item[1];
+              $textColor = !$included ? 'color: var(--text-muted);' : '';
+              $bg = $included ? 'var(--brand-blue-light)' : 'var(--gray-100)';
+              $color = $included ? 'var(--brand-blue)' : 'var(--gray-400)';
+              $symbol = $included ? '✓' : '—';
+            @endphp
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; {{ $textColor }}">
+              <div style="width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; background: {{ $bg }}; color: {{ $color }};">
+                {{ $symbol }}
               </div>
               {{ $feature }}
             </div>

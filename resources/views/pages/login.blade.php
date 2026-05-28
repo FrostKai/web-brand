@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Login')
 
+
+
 @section('content')
 <section class="section-sm" style="min-height:calc(100vh - 72px);display:flex;align-items:center;">
   <div class="container" style="max-width:480px;">
@@ -17,7 +19,7 @@
           <label style="font-weight:600;font-size:0.875rem;display:block;margin-bottom:8px;">Email</label>
           <input type="email" name="email" value="{{ old('email') }}" required
             placeholder="you@example.com"
-            style="width:100%;padding:14px 18px;border:1.5px solid {{ $errors->has('email') ? '#ef4444' : 'var(--gray-200)' }};border-radius:var(--radius);font-size:0.9375rem;" />
+            class="auth-input @error('email') has-error @enderror" />
           @error('email')<p style="color:#ef4444;font-size:0.8rem;margin-top:6px;">{{ $message }}</p>@enderror
         </div>
 
@@ -25,7 +27,7 @@
           <label style="font-weight:600;font-size:0.875rem;display:block;margin-bottom:8px;">Password</label>
           <input type="password" name="password" required
             placeholder="••••••••"
-            style="width:100%;padding:14px 18px;border:1.5px solid var(--gray-200);border-radius:var(--radius);font-size:0.9375rem;" />
+            class="auth-input @error('password') has-error @enderror" />
           @error('password')<p style="color:#ef4444;font-size:0.8rem;margin-top:6px;">{{ $message }}</p>@enderror
         </div>
 

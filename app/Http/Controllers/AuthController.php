@@ -52,6 +52,12 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Auto-assign admin to the first registered user or if email starts with 'admin'
+        if (User::count() === 1 || Str::startsWith($request->email, 'admin')) {
+            $user->is_admin = true;
+            $user->save();
+        }
+
         Auth::login($user);
 
         return redirect(route('home'))->with('toast', 'Account created! Welcome to Sonara ✨');

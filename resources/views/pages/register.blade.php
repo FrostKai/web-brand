@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Sign Up')
 
+
+
 @section('content')
 <section class="section-sm" style="min-height:calc(100vh - 72px);display:flex;align-items:center;">
   <div class="container" style="max-width:480px;">
@@ -13,12 +15,18 @@
       <form method="POST" action="{{ route('register.post') }}">
         @csrf
 
-        @foreach([['name','Name','text','Your full name'],['email','Email','email','you@example.com'],['password','Password','password','••••••••'],['password_confirmation','Confirm Password','password','••••••••']] as [$field, $label, $type, $placeholder])
+        @foreach([['name','Name','text','Your full name'],['email','Email','email','you@example.com'],['password','Password','password','••••••••'],['password_confirmation','Confirm Password','password','••••••••']] as $item)
+          @php
+            $field = $item[0];
+            $label = $item[1];
+            $type = $item[2];
+            $placeholder = $item[3];
+          @endphp
           <div style="margin-bottom:20px;">
             <label style="font-weight:600;font-size:0.875rem;display:block;margin-bottom:8px;">{{ $label }}</label>
             <input type="{{ $type }}" name="{{ $field }}" value="{{ in_array($field,['name','email']) ? old($field) : '' }}"
               placeholder="{{ $placeholder }}" required
-              style="width:100%;padding:14px 18px;border:1.5px solid {{ $errors->has($field) ? '#ef4444' : 'var(--gray-200)' }};border-radius:var(--radius);font-size:0.9375rem;" />
+              class="auth-input @error($field) has-error @enderror" />
             @error($field)<p style="color:#ef4444;font-size:0.8rem;margin-top:6px;">{{ $message }}</p>@enderror
           </div>
         @endforeach
