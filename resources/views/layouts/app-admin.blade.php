@@ -25,18 +25,11 @@
         <div class="nav-inner">
             <a href="{{ route('home') }}" class="nav-logo">Sonara<span>.</span></a>
 
-            <div class="nav-links">
-                <a href="{{ route('home') }}" @class(['active'=> request()->routeIs('home')])>Home</a>
-                <a href="{{ route('products.index') }}" @class(['active'=> request()->routeIs('products.*')])>Products</a>
-                <a href="{{ route('about') }}" @class(['active'=> request()->routeIs('about')])>Our Story</a>
-                <a href="{{ route('pricing') }}" @class(['active'=> request()->routeIs('pricing')])>Pricing</a>
-                <a href="{{ route('contact') }}" @class(['active'=> request()->routeIs('contact')])>Contact</a>
-            </div>
+         
 
             <div class="nav-actions">
                 @auth
                 @if(auth()->user()->is_admin)
-                <a href="{{ route('admin.dashboard') }}" class="btn btn-outline btn-sm" style="margin-right: 8px; border-color: var(--accent); color: var(--accent);">Admin Panel 🛠️</a>
                 @endif
                 <span style="font-size:0.9rem;color:var(--text-muted); margin-right: 8px;">Hi, {{ auth()->user()->name }}</span>
                 <form method="POST" action="{{ route('logout') }}" style="display:inline;">
@@ -48,14 +41,6 @@
                 <a href="{{ route('register') }}" class="btn btn-primary btn-sm">Sign Up</a>
                 @endauth
 
-                {{-- Cart button --}}
-                <a href="{{ route('cart.index') }}" class="cart-btn" title="Cart">
-                    🛒
-                    @php $cartCount = collect(session('cart', []))->sum('qty'); @endphp
-                    @if($cartCount > 0)
-                    <span class="cart-badge">{{ $cartCount }}</span>
-                    @endif
-                </a>
 
                 <button class="hamburger" id="hamburger-btn" aria-label="Menu">
                     <span></span><span></span><span></span>
@@ -69,7 +54,7 @@
         <a href="{{ route('home') }}">Home</a>
         <a href="{{ route('products.index') }}">Products</a>
         <a href="{{ route('about') }}">Our Story</a>
-        <a href="{{ route('pricing') }}">Pricing</a>
+        
         <a href="{{ route('contact') }}">Contact</a>
         <a href="{{ route('cart.index') }}">Cart ({{ $cartCount ?? 0 }})</a>
         @auth
@@ -99,7 +84,7 @@
         @yield('content')
     </main>
 
-   
+
     {{-- Toast auto-dismiss --}}
     <script>
         // Navbar scroll effect

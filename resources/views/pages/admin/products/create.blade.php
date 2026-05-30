@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-admin')
 @section('title', 'Add Product')
 
 @push('head')
@@ -251,10 +251,11 @@
             <input type="number" name="stock" class="form-input" value="{{ old('stock', 100) }}" required placeholder="100" />
           </div>
           <div class="form-group">
-            <label class="form-label">Emoji Icon</label>
-            <input type="text" name="emoji" class="form-input" value="{{ old('emoji', '🎵') }}" placeholder="e.g., 🎧, 🎵, 🔊" />
+            <label class="form-label">Link Shopee Brand</label>
+            <input type="url" name="shopee_link" class="form-input" value="{{ old('shopee_link') }}" placeholder="link Shopee" />
           </div>
         </div>
+      
 
         <div class="form-row">
           <div class="form-group">

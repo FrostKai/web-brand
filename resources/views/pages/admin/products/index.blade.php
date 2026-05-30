@@ -1,7 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.app-admin')
 @section('title', 'Manage Products')
-
-
 
 @section('content')
 <div class="admin-wrapper">
@@ -18,6 +16,10 @@
         </a>
         <a href="{{ route('admin.products.create') }}" class="sidebar-link">
           <span>➕</span> Add Product
+        </a>
+        {{-- Menu Baru untuk Verifikasi --}}
+        <a href="{{ route('admin.dashboard') }}#verifikasi-shopee" class="sidebar-link" style="border-left: 4px solid transparent;">
+          <span>🧡</span> Verifikasi Shopee
         </a>
       </div>
     </div>
@@ -43,85 +45,65 @@
       </div>
     </div>
 
-    {{-- Product List Card --}}
     <div class="dashboard-card">
       <div style="overflow-x: auto;">
-        @if($products->isEmpty())
-          <div style="text-align: center; padding: 40px 0; color: var(--text-muted);">
-            <p style="font-size: 1.5rem; margin-bottom: 8px;">📦</p>
-            <p>No products available. Click the button above to add one!</p>
-          </div>
+        @if(empty($products) || $products->isEmpty())
+        <div style="text-align: center; padding: 40px 0; color: var(--text-muted);">
+          <p>No products available.</p>
+        </div>
         @else
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Badge</th>
-                <th>Featured</th>
-                <th style="text-align: right;">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($products as $product)
-                <tr>
-                  <td>
-                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover;" />
-                  </td>
-                  <td>
-                    <div style="font-weight: 600; color: var(--brand-navy);">{{ $product->name }} {{ $product->emoji }}</div>
-                    <div style="font-size: 0.75rem; color: var(--text-muted);">{{ $product->slug }}</div>
-                  </td>
-                  <td>{{ $product->category_label }}</td>
-                  <td>
-                    <span style="font-weight: 600;">${{ number_format($product->price, 2) }}</span>
-                    @if($product->old_price)
-                      <span style="text-decoration: line-through; color: var(--text-muted); font-size: 0.8rem; margin-left: 4px;">
-                        ${{ number_format($product->old_price, 2) }}
-                      </span>
-                    @endif
-                  </td>
-                  <td>{{ $product->stock }} units</td>
-                  <td>
-                    @if($product->badge)
-                      <span class="badge-tag {{ $product->badge_type }}">
-                        {{ $product->badge }}
-                      </span>
-                    @else
-                      <span style="color: var(--text-muted); font-size: 0.85rem;">—</span>
-                    @endif
-                  </td>
-                  <td>
-                    @if($product->is_featured)
-                      <span style="color: #2EC4B6; font-weight: 600;">★ Yes</span>
-                    @else
-                      <span style="color: var(--text-muted);">No</span>
-                    @endif
-                  </td>
-                  <td>
-                    <div class="actions-flex" style="justify-content: flex-end;">
-                      <a href="{{ route('products.show', $product->slug) }}" class="btn-action btn-outline" target="_blank" style="padding: 6px 12px; border-radius: 8px; font-size: 0.8rem;">
-                        View
-                      </a>
-                      <a href="{{ route('admin.products.edit', $product->id) }}" class="btn-action btn-dark" style="padding: 6px 12px; border-radius: 8px; font-size: 0.8rem;">
-                        Edit
-                      </a>
-                      <form method="POST" action="{{ route('admin.products.delete', $product->id) }}" onsubmit="return confirm('Are you sure you want to delete this product?');" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn-action btn-primary" style="padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; background: #ef4444; box-shadow: none;">
-                          Delete
-                        </button>
-                      </form>
-                    </div>
-                  </td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Product Details</th>
+              <th>Price & Stock</th>
+              <th>Shopee Link</th>
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($products as $product)
+            <tr>
+              <td>
+                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover;" />
+              </td>
+              <td>
+                <div style="font-weight: 600; color: var(--brand-navy);">{{ $product->name }}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">{{ $product->category_label }}</div>
+              </td>
+              <td>
+                <div style="font-weight: 600;">${{ number_format($product->price, 2) }}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Stock: {{ $product->stock }}</div>
+              </td>
+              <td>
+                @if(!empty($product->shopee_link))
+                  <a href="{{ $product->shopee_link }}" target="_blank" style="color: #ee4d2d; font-size: 0.85rem; font-weight: 600;">Terhubung 🧡</a>
+                @else
+                  <span style="color: var(--text-muted); font-size: 0.85rem;">Tidak Ada</span>
+                @endif
+              </td>
+              <td>
+                <div class="actions-flex" style="display: flex; gap: 8px; justify-content: flex-end;">
+                  <a href="{{ route('products.show', $product->slug) }}" class="btn-action btn-outline" target="_blank" style="padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; border: 1px solid var(--gray-300); text-decoration: none; color: inherit;">
+                    View
+                  </a>
+                  <a href="{{ route('admin.products.edit', $product->id) }}" class="btn-action btn-dark" style="padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; background: var(--brand-navy); color: white; text-decoration: none;">
+                    Edit
+                  </a>
+                  <form method="POST" action="{{ route('admin.products.delete', $product->id) }}" onsubmit="return confirm('Are you sure you want to delete this product?');" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-action btn-primary" style="padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; background: #ef4444; color: white; border: none; cursor: pointer;">
+                      Delete
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
         @endif
       </div>
     </div>

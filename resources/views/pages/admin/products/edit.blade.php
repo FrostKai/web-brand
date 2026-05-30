@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-admin')
 @section('title', 'Edit Product')
 
 @push('head')
@@ -18,8 +18,9 @@
     display: flex;
     flex-direction: column;
     gap: 32px;
-    border-right: 1px solid rgba(255,255,255,0.05);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
   }
+
   .sidebar-title {
     font-size: 0.85rem;
     text-transform: uppercase;
@@ -27,11 +28,13 @@
     color: var(--gray-400);
     font-weight: 700;
   }
+
   .sidebar-menu {
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
+
   .sidebar-link {
     display: flex;
     align-items: center;
@@ -40,10 +43,12 @@
     border-radius: 12px;
     font-size: 0.95rem;
     font-weight: 500;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255, 255, 255, 0.7);
     transition: all var(--transition);
   }
-  .sidebar-link:hover, .sidebar-link.active {
+
+  .sidebar-link:hover,
+  .sidebar-link.active {
     color: var(--white);
     background: rgba(67, 97, 238, 0.15);
     border-left: 4px solid var(--brand-blue);
@@ -55,12 +60,14 @@
     padding: 40px;
     overflow-y: auto;
   }
+
   .content-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 32px;
   }
+
   .content-title {
     font-family: 'Fraunces', serif;
     font-size: 2rem;
@@ -80,11 +87,13 @@
   .form-group {
     margin-bottom: 24px;
   }
+
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
   }
+
   .form-label {
     display: block;
     font-weight: 600;
@@ -92,6 +101,7 @@
     color: var(--brand-navy);
     margin-bottom: 8px;
   }
+
   .form-input {
     width: 100%;
     padding: 12px 16px;
@@ -101,10 +111,12 @@
     transition: all var(--transition);
     color: var(--text);
   }
+
   .form-input:focus {
     border-color: var(--brand-blue);
     background: var(--brand-blue-light);
   }
+
   .form-textarea {
     width: 100%;
     padding: 12px 16px;
@@ -117,6 +129,7 @@
     transition: all var(--transition);
     color: var(--text);
   }
+
   .form-textarea:focus {
     border-color: var(--brand-blue);
     background: var(--brand-blue-light);
@@ -136,6 +149,7 @@
     gap: 12px;
     align-items: center;
   }
+
   .color-input-container {
     display: flex;
     align-items: center;
@@ -157,9 +171,11 @@
     .admin-wrapper {
       grid-template-columns: 1fr;
     }
+
     .admin-sidebar {
       display: none;
     }
+
     .form-row {
       grid-template-columns: 1fr;
       gap: 0;
@@ -186,7 +202,7 @@
         </a>
       </div>
     </div>
-    
+
     <div style="margin-top: auto;">
       <a href="{{ route('home') }}" class="sidebar-link" style="background: rgba(255,255,255,0.05);">
         <span>🏠</span> Back to Store
@@ -206,13 +222,13 @@
     {{-- Form --}}
     <div class="form-card">
       @if ($errors->any())
-        <div style="padding: 16px; background: #fee2e2; border: 1px solid #fecaca; border-radius: var(--radius); margin-bottom: 24px; color: #dc2626; font-size: 0.9rem;">
-          <ul style="padding-left: 16px; list-style-type: disc;">
-            @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-            @endforeach
-          </ul>
-        </div>
+      <div style="padding: 16px; background: #fee2e2; border: 1px solid #fecaca; border-radius: var(--radius); margin-bottom: 24px; color: #dc2626; font-size: 0.9rem;">
+        <ul style="padding-left: 16px; list-style-type: disc;">
+          @foreach ($errors->all() as $error)
+          <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
       @endif
 
       <form method="POST" action="{{ route('admin.products.update', $product->id) }}">
@@ -252,8 +268,8 @@
             <input type="number" name="stock" class="form-input" value="{{ old('stock', $product->stock) }}" required placeholder="100" />
           </div>
           <div class="form-group">
-            <label class="form-label">Emoji Icon</label>
-            <input type="text" name="emoji" class="form-input" value="{{ old('emoji', $product->emoji) }}" placeholder="e.g., 🎧, 🎵, 🔊" />
+            <label class="form-label">Link Shopee Brand</label>
+            <input type="url" name="shopee_link" class="form-input" value="{{ old('shopee_link') }}" placeholder="link Shopee" />
           </div>
         </div>
 
@@ -292,22 +308,22 @@
           </div>
           <div id="specs-container">
             @php
-              $specs = is_array($product->specs) ? $product->specs : json_decode($product->specs ?? '[]', true);
+            $specs = is_array($product->specs) ? $product->specs : json_decode($product->specs ?? '[]', true);
             @endphp
             @if(empty($specs))
-              <div class="spec-row">
-                <input type="text" name="specs_keys[]" class="form-input" placeholder="e.g., Battery Life" />
-                <input type="text" name="specs_values[]" class="form-input" placeholder="e.g., 40 Hours" />
-                <button type="button" class="btn-remove" onclick="this.parentElement.remove()">&times;</button>
-              </div>
+            <div class="spec-row">
+              <input type="text" name="specs_keys[]" class="form-input" placeholder="e.g., Battery Life" />
+              <input type="text" name="specs_values[]" class="form-input" placeholder="e.g., 40 Hours" />
+              <button type="button" class="btn-remove" onclick="this.parentElement.remove()">&times;</button>
+            </div>
             @else
-              @foreach($specs as $spec)
-                <div class="spec-row">
-                  <input type="text" name="specs_keys[]" class="form-input" value="{{ $spec[0] ?? '' }}" placeholder="Spec key" />
-                  <input type="text" name="specs_values[]" class="form-input" value="{{ $spec[1] ?? '' }}" placeholder="Spec value" />
-                  <button type="button" class="btn-remove" onclick="this.parentElement.remove()">&times;</button>
-                </div>
-              @endforeach
+            @foreach($specs as $spec)
+            <div class="spec-row">
+              <input type="text" name="specs_keys[]" class="form-input" value="{{ $spec[0] ?? '' }}" placeholder="Spec key" />
+              <input type="text" name="specs_values[]" class="form-input" value="{{ $spec[1] ?? '' }}" placeholder="Spec value" />
+              <button type="button" class="btn-remove" onclick="this.parentElement.remove()">&times;</button>
+            </div>
+            @endforeach
             @endif
           </div>
         </div>
@@ -320,13 +336,13 @@
           </div>
           <div id="colors-container" class="color-picker-wrapper">
             @php
-              $colors = is_array($product->colors) ? $product->colors : json_decode($product->colors ?? '[]', true);
+            $colors = is_array($product->colors) ? $product->colors : json_decode($product->colors ?? '[]', true);
             @endphp
             @foreach($colors as $color)
-              <div class="color-input-container">
-                <input type="color" name="colors[]" value="{{ $color }}" style="border:none; background:none; width:30px; height:30px; cursor:pointer;" />
-                <button type="button" class="btn-remove" style="font-size:0.9rem;" onclick="this.parentElement.remove()">Remove</button>
-              </div>
+            <div class="color-input-container">
+              <input type="color" name="colors[]" value="{{ $color }}" style="border:none; background:none; width:30px; height:30px; cursor:pointer;" />
+              <button type="button" class="btn-remove" style="font-size:0.9rem;" onclick="this.parentElement.remove()">Remove</button>
+            </div>
             @endforeach
           </div>
         </div>
