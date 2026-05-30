@@ -7,7 +7,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\PricingController;
+//use App\Http\Controllers\PricingController;
 use App\Http\Controllers\AdminController;
 
 /*
@@ -22,7 +22,7 @@ Route::post('/newsletter', [HomeController::class, 'subscribe'])->name('newslett
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
-Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
+//Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 
 // Products
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');

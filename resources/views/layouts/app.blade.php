@@ -29,7 +29,7 @@
         <a href="{{ route('home') }}" @class(['active'=> request()->routeIs('home')])>Home</a>
         <a href="{{ route('products.index') }}" @class(['active'=> request()->routeIs('products.*')])>Products</a>
         <a href="{{ route('about') }}" @class(['active'=> request()->routeIs('about')])>Our Story</a>
-        <a href="{{ route('pricing') }}" @class(['active'=> request()->routeIs('pricing')])>Pricing</a>
+        
         <a href="{{ route('contact') }}" @class(['active'=> request()->routeIs('contact')])>Contact</a>
       </div>
 
@@ -69,7 +69,7 @@
     <a href="{{ route('home') }}">Home</a>
     <a href="{{ route('products.index') }}">Products</a>
     <a href="{{ route('about') }}">Our Story</a>
-    <a href="{{ route('pricing') }}">Pricing</a>
+    
     <a href="{{ route('contact') }}">Contact</a>
     <a href="{{ route('cart.index') }}">Cart ({{ $cartCount ?? 0 }})</a>
     @auth
@@ -121,7 +121,7 @@
           <div style="font-weight:600;margin-bottom:16px;">Company</div>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <a href="{{ route('about') }}" style="color:rgba(255,255,255,0.6);">Our Story</a>
-            <a href="{{ route('pricing') }}" style="color:rgba(255,255,255,0.6);">Pricing</a>
+            //pricing
             <a href="{{ route('contact') }}" style="color:rgba(255,255,255,0.6);">Contact</a>
           </div>
         </div>
